@@ -40,6 +40,7 @@ public class BasicGameApp implements Runnable {
 	public BufferStrategy bufferStrategy;
 	public Image astroPic;
     public Image asteroidPic;
+    public Image backgroundPic;
 
    //Declare the objects used in the program
    //These are things that are made up of more than one variable type
@@ -82,11 +83,14 @@ public class BasicGameApp implements Runnable {
       //create (construct) the objects needed for the game and load up 
 		astroPic = Toolkit.getDefaultToolkit().getImage("astronaut.png"); //load the picture
         asteroidPic = Toolkit.getDefaultToolkit().getImage("asteroid.jpg"); //load the picture
+        backgroundPic = Toolkit.getDefaultToolkit().getImage("stars.jpeg"); //load the picture
+
 
         astro = new Astronaut(10,100);
         astro2 = new Astronaut(randx,randy);
-        asteroid1 = new Asteroid(500,100);
-        asteroid2 = new Asteroid(100,500);
+        asteroid1 = new Asteroid(150,100);
+        asteroid1.dx = -asteroid1.dx;
+        asteroid2 = new Asteroid(100,45);
 
 
 	}// BasicGameApp()
@@ -124,17 +128,26 @@ public class BasicGameApp implements Runnable {
 
     public void crashing(){
         //check to see if my astros crash into each other
-        if(astro.hitbox.intersects(astro2.hitbox)){
+        if(astro.hitbox.intersects(astro2.hitbox) && astro2.isAlive==true){
             System.out.println("CRASH");
-            astro.dx = -astro.dx;
-            astro2.dx = -astro2.dx;
+            astro.dy = -astro.dy;
+            astro2.dy = -astro2.dy;
+            astro2.isAlive = false;
 
         }
-        if(asteroid1.hitbox2.intersects(asteroid2.hitbox2)){
-            System.out.println("CRASH");
-            asteroid1.dx = -asteroid1.dx;
-            asteroid2.dx = -asteroid2.dx;
+        if(asteroid1.hitbox.intersects(asteroid2.hitbox) && asteroid1.isCrashing == false){
+            System.out.println("asteroid collision");
+            asteroid1.height += 50;
+           // asteroid1.height = asteroid1.height+50;
+            //asteroid1.dx = -asteroid1.dx;
+            //asteroid2.dx = -asteroid2.dx;
+            asteroid1.isCrashing=true;
 
+        }
+
+        if(!asteroid1.hitbox.intersects(asteroid2.hitbox)) {
+            System.out.println("no intersection");
+            asteroid1.isCrashing = false;
         }
     }
 	
@@ -183,10 +196,16 @@ public class BasicGameApp implements Runnable {
 	private void render() {
 		Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 		g.clearRect(0, 0, WIDTH, HEIGHT);
+        g.drawImage(backgroundPic,0, 0, WIDTH, HEIGHT, null);
 
-      //draw the image of the astronaut
-		g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
-        g.drawImage(astroPic,astro2.xpos,astro2.ypos,astro2.width,astro2.height,null);
+
+        //draw the image of the astronaut
+
+        g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
+
+        if(astro2.isAlive == true) {
+            g.drawImage(astroPic, astro2.xpos, astro2.ypos, astro2.width, astro2.height, null);
+        }
         g.drawImage(asteroidPic,asteroid1.xpos, asteroid1.ypos, asteroid1.width, asteroid1.height, null);
         g.drawImage(asteroidPic,asteroid2.xpos, asteroid2.ypos, asteroid2.width, asteroid2.height, null);
         g.drawRect(astro.hitbox.x,astro.hitbox.y,astro.hitbox.width,astro.hitbox.height);

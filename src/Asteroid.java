@@ -12,7 +12,8 @@ public class Asteroid {
     public int width;
     public int height;
     public boolean isAlive; //a boolean to denote if the hero is alive or dead.
-    public Rectangle hitbox2;
+    public Rectangle hitbox;
+    public boolean isCrashing;
 
 
     // METHOD DEFINITION SECTION
@@ -27,22 +28,25 @@ public class Asteroid {
         xpos = pXpos;
         ypos = pYpos;
         dx =-5;
-        dy =4;
+        dy =0;
         width = 85;
         height = 85;
         isAlive = false;
+        hitbox = new Rectangle(xpos,ypos,width,height);
+        isCrashing = false;
+
 
     } // constructor
 
     //The move method.  Everytime this is run (or "called") the hero's x position and y position change by dx and dy
     public void move() {
         if(xpos >= 1000){//wrap when hits right wall
-            xpos = 0-width;
+            xpos = 1;
 
         }
 
         if (xpos <= 0){//wrap when hits left wall
-            xpos = 999-width;
+            xpos = 999;
 
         }
 
@@ -57,7 +61,7 @@ public class Asteroid {
         //todo: make it wrap when it his the top and bottom
         xpos = xpos + dx;
         ypos = ypos + dy;
-        hitbox2 = new Rectangle(xpos,ypos,width,height);
+        hitbox = new Rectangle(xpos,ypos,width,height);
     }
 
 }
