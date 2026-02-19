@@ -13,6 +13,8 @@
 
 //Graphics Libraries
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -21,10 +23,45 @@ import javax.swing.JPanel;
 
 //*******************************************************************************
 // Class Definition Section
+//step 1: implement KeyListener
+public class BasicGameApp implements Runnable, KeyListener {
+    //step 3: add the KeyListener methods
+    @Override
+    public void keyTyped(KeyEvent e) {
 
-public class BasicGameApp implements Runnable {
+    }
 
-   //Variable Definition Section
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("key typed " + e.getKeyCode());
+        //UP ARROW = 38
+        if(e.getKeyCode() == 38){
+            System.out.println("pressed up arrow");
+            //astro.ypos = astro.ypos - 20;
+            astro.dy = -Math.abs(astro.dy);
+        }
+
+        if(e.getKeyCode() == 39){
+            System.out.println("pressed right arrow");
+            astro.dx = Math.abs(astro.dx);
+        }
+
+        if(e.getKeyCode() == 40){
+            System.out.println("pressed bottom arrow");
+            astro.dy = Math.abs(astro.dy);
+        }
+
+        if(e.getKeyCode() == 37){
+            System.out.println("pressed left arrow");
+            astro.dx = -Math.abs(astro.dx);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+//Variable Definition Section
    //Declare the variables used in the program 
    //You can set their initial values too
    
@@ -73,7 +110,7 @@ public class BasicGameApp implements Runnable {
       int randy = (int)(Math.random()*10) +1;
 
       //range 1-999
-      randx = (int)(Math.random()*999)+1;
+        randx = (int)(Math.random()*999)+1;
       //range 1-699
       randy = (int)(Math.random()*699)+1;
 
@@ -122,7 +159,7 @@ public class BasicGameApp implements Runnable {
         astro2.move();
         asteroid1.move();
         asteroid2.move();
-        crashing();
+        //crashing();
 
 	}
 
@@ -138,9 +175,9 @@ public class BasicGameApp implements Runnable {
         if(asteroid1.hitbox.intersects(asteroid2.hitbox) && asteroid1.isCrashing == false){
             System.out.println("asteroid collision");
             asteroid1.height += 50;
-           // asteroid1.height = asteroid1.height+50;
-            //asteroid1.dx = -asteroid1.dx;
-            //asteroid2.dx = -asteroid2.dx;
+           asteroid1.height = asteroid1.height+50;
+           asteroid1.dx = -asteroid1.dx;
+            asteroid2.dx = -asteroid2.dx;
             asteroid1.isCrashing=true;
 
         }
@@ -171,7 +208,11 @@ public class BasicGameApp implements Runnable {
    
       // creates a canvas which is a blank rectangular area of the screen onto which the application can draw
       // and trap input events (Mouse and Keyboard events)
-      canvas = new Canvas();  
+      canvas = new Canvas();
+
+      //step 2: set canvas as the KeyListener
+      canvas.addKeyListener(this);
+
       canvas.setBounds(0, 0, WIDTH, HEIGHT);
       canvas.setIgnoreRepaint(true);
    
@@ -217,4 +258,7 @@ public class BasicGameApp implements Runnable {
 
 		bufferStrategy.show();
 	}
+
+
+
 }
