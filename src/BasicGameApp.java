@@ -15,6 +15,8 @@
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.JFrame;
@@ -24,7 +26,8 @@ import javax.swing.JPanel;
 //*******************************************************************************
 // Class Definition Section
 //step 1: implement KeyListener
-public class BasicGameApp implements Runnable, KeyListener {
+//step 1: implement MouseListener
+public class BasicGameApp implements Runnable, KeyListener, MouseListener {
     //step 3: add the KeyListener methods
     @Override
     public void keyTyped(KeyEvent e) {
@@ -38,7 +41,7 @@ public class BasicGameApp implements Runnable, KeyListener {
         if(e.getKeyCode() == 38){
             System.out.println("pressed up arrow");
             //astro.ypos = astro.ypos - 20;
-            astro.dy = -Math.abs(astro.dy);
+            astro.dy = -2; //-Math.abs(astro.dy);
         }
 
         if(e.getKeyCode() == 39){
@@ -48,7 +51,7 @@ public class BasicGameApp implements Runnable, KeyListener {
 
         if(e.getKeyCode() == 40){
             System.out.println("pressed bottom arrow");
-            astro.dy = Math.abs(astro.dy);
+            astro.dy = 2;//Math.abs(astro.dy);
         }
 
         if(e.getKeyCode() == 37){
@@ -59,7 +62,14 @@ public class BasicGameApp implements Runnable, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        if(e.getKeyCode() == 38){
+            System.out.println("not pressed up arrow");
+            astro.dy=0;
+        }
+        if(e.getKeyCode() == 40){
+            System.out.println("not pressed down arrow");
+            astro.dy = 0;
+        }
     }
 //Variable Definition Section
    //Declare the variables used in the program 
@@ -212,6 +222,8 @@ public class BasicGameApp implements Runnable, KeyListener {
 
       //step 2: set canvas as the KeyListener
       canvas.addKeyListener(this);
+      //step 2: set canvas as the MouseListener
+       canvas.addMouseListener(this);
 
       canvas.setBounds(0, 0, WIDTH, HEIGHT);
       canvas.setIgnoreRepaint(true);
@@ -259,6 +271,33 @@ public class BasicGameApp implements Runnable, KeyListener {
 		bufferStrategy.show();
 	}
 
+//step 3: implement the methods
+    @Override
+    public void mouseClicked(MouseEvent e) {
 
+    }
 
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println(e.getPoint());
+        asteroid2.xpos = e.getX();
+        asteroid2.ypos = e.getY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        System.out.println("entered");
+        astro2.isAlive = true;
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        astro2.isAlive = false;
+        System.out.println("Astro2 is gone");
+    }
 }
