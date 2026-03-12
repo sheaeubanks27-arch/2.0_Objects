@@ -34,14 +34,14 @@ public class Asteroid {
         isAlive = false;
         hitbox = new Rectangle(xpos,ypos,width,height);
         isCrashing = false;
-        Asteroid[] asteroids = new Asteroid[5];
+
 
 
 
     } // constructor
 
     //The move method.  Everytime this is run (or "called") the hero's x position and y position change by dx and dy
-    public void move(int[] asteroids) {
+    public void move() {
         if(xpos >= 1000){//wrap when hits right wall
             xpos = 1;
 
@@ -60,9 +60,9 @@ public class Asteroid {
             ypos = 699-height;
         }
 
-        for(int h = 0; h < asteroids.length; h++){
 
-        }
+
+
 
         //todo: make it wrap when it his the top and bottom
         xpos = xpos + dx;
